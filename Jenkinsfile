@@ -52,11 +52,7 @@ pipeline {
 
         stage('Deploy Frontend') {
             steps {
-                echo "Deploying Frontend..."
-                sh '''
-                sudo cp -r frontend/* /usr/share/nginx/html/
-                sudo systemctl restart nginx
-                '''
+                echo "Deploying Frontend...Frontend is already deployed to Nginx. Skipping deployment."
             }
         }
     }
