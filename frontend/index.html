@@ -1,143 +1,201 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Indian Recipes</title>
+
 <style>
 *{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family: Arial, sans-serif;
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
 }
+
 body{
-background:#fff8f0;
-color:#333;
+    background:#fff8f0;
+    color:#333;
 }
+
 header{
-background:#ff6b35;
-color:white;
-padding:20px;
-text-align:center;
+    background:#ff6b35;
+    color:white;
+    padding:20px;
+    text-align:center;
 }
+
 nav{
-background:#222;
-padding:10px;
-text-align:center;
+    background:#222;
+    padding:10px;
+    text-align:center;
 }
+
 nav a{
-color:white;
-text-decoration:none;
-margin:0 15px;
-font-size:18px;
+    color:white;
+    text-decoration:none;
+    margin:0 15px;
+    font-size:18px;
 }
+
 .hero{
-height:350px;
-background:linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
-url('https://images.unsplash.com/photo-1504674900247-0877df9cc836');
-background-size:cover;
-background-position:center;
-display:flex;
-justify-content:center;
-align-items:center;
-color:white;
-text-align:center;
+    height:350px;
+    background:
+    linear-gradient(rgba(0,0,0,.5),rgba(0,0,0,.5)),
+    url("https://images.unsplash.com/photo-1504674900247-0877df9cc836");
+
+    background-size:cover;
+    background-position:center;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:white;
+    text-align:center;
 }
+
 .hero h1{
-font-size:50px;
+    font-size:50px;
 }
+
+.hero p{
+    margin-top:10px;
+}
+
 .container{
-padding:40px;
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:20px;
+    padding:40px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:20px;
 }
+
 .card{
-background:white;
-border-radius:10px;
-overflow:hidden;
-box-shadow:0 4px 10px rgba(0,0,0,0.1);
-transition:0.3s;
+    background:white;
+    border-radius:10px;
+    box-shadow:0 4px 10px rgba(0,0,0,.15);
+    padding:20px;
+    transition:.3s;
 }
+
 .card:hover{
-transform:translateY(-5px);
+    transform:translateY(-5px);
 }
-.card img{
-width:100%;
-height:200px;
-object-fit:cover;
+
+.card h3{
+    color:#ff6b35;
+    margin-bottom:15px;
 }
-.card-content{
-padding:20px;
+
+.card p{
+    margin-bottom:10px;
+    line-height:1.5;
 }
-.card-content h3{
-margin-bottom:10px;
-color:#ff6b35;
-}
-.btn{
-display:inline-block;
-margin-top:10px;
-padding:10px 15px;
-background:#ff6b35;
-color:white;
-text-decoration:none;
-border-radius:5px;
-}
+
 footer{
-background:#222;
-color:white;
-text-align:center;
-padding:15px;
-margin-top:30px;
+    background:#222;
+    color:white;
+    text-align:center;
+    padding:15px;
+    margin-top:30px;
 }
 </style>
+
 </head>
+
 <body>
+
 <header>
 <h1>Indian Recipes</h1>
 <p>Easy & Delicious Homemade Dishes</p>
 </header>
+
 <nav>
 <a href="#">Home</a>
 <a href="#">Recipes</a>
 <a href="#">About</a>
 <a href="#">Contact</a>
 </nav>
+
 <section class="hero">
 <div>
 <h1>Cook Tasty Indian Food</h1>
-<p>Simple recipes with ingredients available at home</p>
+<p>Recipes loaded directly from MariaDB using Node.js API</p>
 </div>
 </section>
-<section class="container">
-<div class="card">
-<img src="https://images.unsplash.com/photo-1589302168068-964664d93dc0" alt="Biryani">
-<div class="card-content">
-<h3>Veg Biryani</h3>
-<p>Easy one-pot flavorful rice dish.</p>
-<a href="#" class="btn">Read More</a>
-</div>
-</div>
-<div class="card">
-<img src="https://images.unsplash.com/photo-1601050690597-df0568f70950" alt="Dosa">
-<div class="card-content">
-<h3>Masala Dosa</h3>
-<p>Crispy dosa with spicy potato filling.</p>
-<a href="#" class="btn">Read More</a>
-</div>
-</div>
-<div class="card">
-<img src="https://images.unsplash.com/photo-1512058564366-18510be2db19" alt="Paneer">
-<div class="card-content">
-<h3>Paneer Butter Masala</h3>
-<p>Rich creamy curry loved by everyone.</p>
-<a href="#" class="btn">Read More</a>
-</div>
-</div>
+
+<section class="container" id="recipesContainer">
+
+<h2>Loading Recipes...</h2>
+
 </section>
+
 <footer>
-<p>© 2026 Indian Recipes | Designed with HTML & CSS</p>
+
+<p>© 2026 Indian Recipes | Three-Tier Application</p>
+
 </footer>
+
+<script>
+
+const api = "http://51.20.96.135:3000/recipes";
+
+async function loadRecipes(){
+
+    try{
+
+        const response = await fetch(api);
+
+        const recipes = await response.json();
+
+        const container =
+        document.getElementById("recipesContainer");
+
+        container.innerHTML="";
+
+        recipes.forEach(recipe=>{
+
+            container.innerHTML += `
+
+            <div class="card">
+
+                <h3>${recipe.recipe_name}</h3>
+
+                <p>
+                <strong>Ingredients</strong><br>
+                ${recipe.ingredients}
+                </p>
+
+                <p>
+                <strong>Instructions</strong><br>
+                ${recipe.instructions}
+                </p>
+
+            </div>
+
+            `;
+
+        });
+
+    }
+
+    catch(error){
+
+        document.getElementById("recipesContainer").innerHTML=
+
+        `<h2 style="color:red;">
+        Unable to connect to Backend Server.
+        </h2>`;
+
+        console.log(error);
+
+    }
+
+}
+
+loadRecipes();
+
+</script>
+
 </body>
 </html>
